@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/components/AuthProvider'
 import {
   PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -57,6 +59,10 @@ function IconPencil() {
 }
 
 export default function Home() {
+  // ── 认证状态 ──────────────────────────────────────────────
+  const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
+
   // ── 新增表单状态 ──────────────────────────────────────────
   const [amount, setAmount] = useState('')
   const [category, setCategory] = useState(CATEGORIES[0])
@@ -77,28 +83,46 @@ export default function Home() {
   // ── 筛选状态（空数组 = 显示全部）────────────────────────────
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-  // ── 数据获取 ──────────────────────────────────────────────
+  // ── 数据获取（只查当前用户自己的记录）──────────────────────
   async function fetchTransactions() {
+    if (!user) return
     setListLoading(true)
     const { data } = await supabase
       .from('transactions')
       .select('*')
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
     setTransactions(data ?? [])
     setListLoading(false)
   }
 
-  useEffect(() => { fetchTransactions() }, [])
+  // ── 访问控制 + 首次加载 ────────────────────────────────────
+  useEffect(() => {
+    if (authLoading) return          // 会话还没查完，先等
+    if (!user) {
+      router.replace('/login')       // 未登录 → 踢去登录页
+      return
+    }
+    fetchTransactions()              // 已登录 → 加载记账数据
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, user])
+
+  // ── 登出 ──────────────────────────────────────────────────
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    router.replace('/login')
+  }
 
   // ── 新增记录 ──────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!user) return
     setStatus('loading')
     setErrorMsg('')
 
     const { error } = await supabase
       .from('transactions')
-      .insert([{ amount: parseFloat(amount), category, note }])
+      .insert([{ amount: parseFloat(amount), category, note, user_id: user.id }])
 
     if (error) {
       setStatus('error')
@@ -114,6 +138,7 @@ export default function Home() {
 
   // ── 删除记录 ──────────────────────────────────────────────
   async function handleDelete(id: number) {
+    if (!user) return
     if (!window.confirm('确认删除这条记录？')) return
     setDeleteError('')
 
@@ -121,6 +146,7 @@ export default function Home() {
       .from('transactions')
       .delete()
       .eq('id', id)
+      .eq('user_id', user.id)
 
     if (error) {
       setDeleteError(`删除失败：${error.message}`)
@@ -137,7 +163,7 @@ export default function Home() {
   }
 
   async function handleEditSave() {
-    if (editingId === null) return
+    if (editingId === null || !user) return
     setEditError('')
 
     const { error } = await supabase
@@ -148,6 +174,7 @@ export default function Home() {
         note: editForm.note,
       })
       .eq('id', editingId)
+      .eq('user_id', user.id)
 
     if (error) {
       setEditError(`保存失败：${error.message}`)
@@ -190,9 +217,31 @@ export default function Home() {
     : transactions.filter(t => selectedCategories.includes(t.category))
 
   // ── 渲染 ──────────────────────────────────────────────────
+  // 会话未确定 / 未登录（即将跳转）时，先不渲染记账页，避免内容闪现
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-sm text-gray-400">加载中...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center p-4 py-12">
       <div className="w-full max-w-md space-y-6">
+
+        {/* 顶部：当前用户 + 登出 */}
+        <div className="flex items-center justify-between bg-white rounded-2xl shadow-md px-5 py-3">
+          <span className="text-sm text-gray-500 truncate">
+            👤 {user.email}
+          </span>
+          <button
+            onClick={handleLogout}
+            className="shrink-0 ml-3 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-medium rounded-lg transition-colors cursor-pointer"
+          >
+            登出
+          </button>
+        </div>
 
         {/* 新增表单卡片 */}
         <div className="bg-white rounded-2xl shadow-md p-8">
