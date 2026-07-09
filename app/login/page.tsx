@@ -96,9 +96,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-1 text-center">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-surface rounded-2xl shadow-soft p-8">
+        <h1 className="text-2xl font-bold text-foreground mb-1 text-center">
           {mode === 'login' ? '登录' : '注册'}
         </h1>
         <p className="text-sm text-gray-400 text-center mb-8">
@@ -144,7 +144,7 @@ export default function LoginPage() {
         {/* Google 登录按钮 */}
         <button
           type="button" onClick={handleGoogleLogin} disabled={googleLoading}
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50 disabled:bg-gray-100 text-gray-700 font-medium rounded-lg py-2.5 transition-colors cursor-pointer disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-background disabled:bg-gray-100 text-gray-700 font-medium rounded-lg py-2.5 transition-colors cursor-pointer disabled:cursor-not-allowed"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

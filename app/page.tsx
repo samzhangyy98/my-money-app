@@ -220,18 +220,18 @@ export default function Home() {
   // 会话未确定 / 未登录（即将跳转）时，先不渲染记账页，避免内容闪现
   if (authLoading || !user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-sm text-gray-400">加载中...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center p-4 py-12">
+    <div className="min-h-screen bg-background flex justify-center p-4 py-12">
       <div className="w-full max-w-md space-y-6">
 
         {/* 顶部：当前用户 + 登出 */}
-        <div className="flex items-center justify-between bg-white rounded-2xl shadow-md px-5 py-3">
+        <div className="flex items-center justify-between bg-surface rounded-2xl shadow-soft px-5 py-3">
           <span className="text-sm text-gray-500 truncate">
             👤 {user.email}
           </span>
@@ -244,8 +244,8 @@ export default function Home() {
         </div>
 
         {/* 新增表单卡片 */}
-        <div className="bg-white rounded-2xl shadow-md p-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2 text-center">记一笔</h1>
+        <div className="bg-surface rounded-2xl shadow-soft p-8">
+          <h1 className="text-2xl font-bold text-foreground mb-2 text-center">记一笔</h1>
           <p className="text-sm text-gray-400 text-center mb-8">记录你的每一笔支出</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -298,8 +298,8 @@ export default function Home() {
 
         {/* 数据概览卡片 */}
         {!listLoading && totalCount > 0 && (
-          <div className="bg-white rounded-2xl shadow-md p-8 space-y-7">
-            <h2 className="text-lg font-semibold text-gray-800">数据概览</h2>
+          <div className="bg-surface rounded-2xl shadow-soft p-8 space-y-7">
+            <h2 className="text-lg font-semibold text-foreground">数据概览</h2>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-blue-50 rounded-xl p-4 text-center">
@@ -345,8 +345,8 @@ export default function Home() {
         )}
 
         {/* 历史记录卡片 */}
-        <div className="bg-white rounded-2xl shadow-md p-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">历史记录</h2>
+        <div className="bg-surface rounded-2xl shadow-soft p-8">
+          <h2 className="text-lg font-semibold text-foreground mb-4">历史记录</h2>
 
           {/* 分类筛选标签 */}
           <div className="flex flex-wrap gap-2 mb-5">

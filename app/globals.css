@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
+/* ════════════════════════════════════════════════════════════
+   Design Tokens · 暖调编辑风（Anthropic/Claude 风格）
+   低饱和、暖灰底调的大地色系；语义命名，组件只引用语义变量。
+   对比度已验证：foreground 10.3:1 / muted 5.2:1（WCAG AA ✅）
+   ════════════════════════════════════════════════════════════ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 基底 */
+  --background: #f5f1e8;   /* 页面底：暖米色，永不用纯白 */
+  --surface:    #fbf9f4;   /* 卡片底：略浅的暖白 */
+  --foreground: #3d3929;   /* 正文：暖深褐灰，非纯黑 */
+  --muted:      #6b6455;   /* 次要文字：暖灰 */
+  --border:     #e4ddcc;   /* 描边：低对比暖灰 */
+
+  /* 强调色（低饱和大地色）+ 同色系浅底（-soft，用于色块/标签背景）*/
+  --accent-terracotta:      #b05c3e;  /* 陶土橙 */
+  --accent-terracotta-soft: #efdfd3;
+  --accent-periwinkle:      #767cae;  /* 长春花紫 */
+  --accent-periwinkle-soft: #e3e4f0;
+  --accent-sage:            #869674;  /* 鼠尾草绿 */
+  --accent-sage-soft:       #e5e9db;
+  --accent-lavender:        #a39ebd;  /* 薰衣草灰 */
+  --accent-lavender-soft:   #eae7f0;
+  --accent-forest:          #40614e;  /* 深林绿 */
+  --accent-forest-soft:     #dbe4dc;
+  --accent-peach:           #d9a491;  /* 灰粉桃 */
+  --accent-peach-soft:      #f6e7de;
 }
 
+/* 接入 Tailwind：定义即生成工具类（bg-surface、text-muted、shadow-soft…） */
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-muted: var(--muted);
+  --color-border: var(--border);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-accent-terracotta: var(--accent-terracotta);
+  --color-accent-terracotta-soft: var(--accent-terracotta-soft);
+  --color-accent-periwinkle: var(--accent-periwinkle);
+  --color-accent-periwinkle-soft: var(--accent-periwinkle-soft);
+  --color-accent-sage: var(--accent-sage);
+  --color-accent-sage-soft: var(--accent-sage-soft);
+  --color-accent-lavender: var(--accent-lavender);
+  --color-accent-lavender-soft: var(--accent-lavender-soft);
+  --color-accent-forest: var(--accent-forest);
+  --color-accent-forest-soft: var(--accent-forest-soft);
+  --color-accent-peach: var(--accent-peach);
+  --color-accent-peach-soft: var(--accent-peach-soft);
+
+  /* 字体：标题衬线（Fraunces，中文回退宋体系）/ 正文无衬线（Inter，中文回退黑体系） */
+  --font-serif: var(--font-fraunces), "Songti SC", "STSong", "Noto Serif SC", serif;
+  --font-sans: var(--font-inter), -apple-system, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+
+  /* 阴影：低透明度、暖褐色调，柔和不生硬 */
+  --shadow-soft: 0 1px 2px rgba(61, 57, 41, 0.05), 0 4px 16px rgba(61, 57, 41, 0.07);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* 标题统一用衬线体（Fraunces 的粗细笔画对比是编辑风的灵魂） */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
 }
