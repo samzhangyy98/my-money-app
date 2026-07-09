@@ -97,38 +97,38 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-sm bg-surface rounded-2xl shadow-soft p-8">
+      <div className="w-full max-w-sm bg-surface rounded-2xl shadow-soft border border-border/60 p-8">
         <h1 className="text-2xl font-bold text-foreground mb-1 text-center">
           {mode === 'login' ? '登录' : '注册'}
         </h1>
-        <p className="text-sm text-gray-400 text-center mb-8">
+        <p className="text-sm text-muted text-center mb-8">
           {mode === 'login' ? '欢迎回来，继续记账' : '创建账号,开始记账'}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+            <label className="block text-sm font-medium text-foreground mb-1">邮箱</label>
             <input
               type="email" required autoComplete="email"
               value={email} onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-border rounded-lg px-4 py-2.5 text-foreground placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-accent-terracotta"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">密码</label>
+            <label className="block text-sm font-medium text-foreground mb-1">密码</label>
             <input
               type="password" required minLength={6}
               autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
               value={password} onChange={e => setPassword(e.target.value)}
               placeholder="至少 6 位"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-border rounded-lg px-4 py-2.5 text-foreground placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-accent-terracotta"
             />
           </div>
 
           <button
             type="submit" disabled={submitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold rounded-lg py-2.5 transition-colors cursor-pointer disabled:cursor-not-allowed"
+            className="w-full bg-accent-terracotta hover:bg-accent-terracotta-deep disabled:bg-accent-terracotta/50 text-white font-semibold rounded-lg py-2.5 transition-colors cursor-pointer disabled:cursor-not-allowed"
           >
             {submitting ? '处理中...' : mode === 'login' ? '登录' : '注册'}
           </button>
@@ -136,15 +136,15 @@ export default function LoginPage() {
 
         {/* 分隔线：或 */}
         <div className="my-6 flex items-center gap-3">
-          <div className="h-px flex-1 bg-gray-200" />
-          <span className="text-xs text-gray-400">或</span>
-          <div className="h-px flex-1 bg-gray-200" />
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs text-muted">或</span>
+          <div className="h-px flex-1 bg-border" />
         </div>
 
         {/* Google 登录按钮 */}
         <button
           type="button" onClick={handleGoogleLogin} disabled={googleLoading}
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-background disabled:bg-gray-100 text-gray-700 font-medium rounded-lg py-2.5 transition-colors cursor-pointer disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 border border-border hover:bg-background disabled:bg-background text-foreground font-medium rounded-lg py-2.5 transition-colors cursor-pointer disabled:cursor-not-allowed"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -156,22 +156,22 @@ export default function LoginPage() {
         </button>
 
         {errorMsg && (
-          <div className="mt-5 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+          <div className="mt-5 p-3 bg-[#F7E4E0] border border-[#E8C8C0] rounded-lg text-[#A0392E] text-sm">
             ❌ {errorMsg}
           </div>
         )}
         {infoMsg && (
-          <div className="mt-5 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+          <div className="mt-5 p-3 bg-accent-sage-soft border border-[#C9D4B8] rounded-lg text-[#3E6B2C] text-sm">
             ✅ {infoMsg}
           </div>
         )}
 
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-muted">
           {mode === 'login' ? '还没有账号？' : '已经有账号了？'}
           <button
             type="button"
             onClick={() => switchMode(mode === 'login' ? 'register' : 'login')}
-            className="ml-1 text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
+            className="ml-1 text-accent-terracotta-deep hover:underline font-medium cursor-pointer"
           >
             {mode === 'login' ? '去注册' : '去登录'}
           </button>

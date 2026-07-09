@@ -35,14 +35,14 @@ export default function AuthCallbackPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       {errorMsg ? (
-        <div className="w-full max-w-sm bg-surface rounded-2xl shadow-soft p-8 text-center space-y-4">
-          <p className="text-sm text-red-600">❌ 登录失败：{errorMsg}</p>
-          <Link href="/login" className="inline-block text-sm text-blue-600 hover:text-blue-700 font-medium">
+        <div className="w-full max-w-sm bg-surface rounded-2xl shadow-soft border border-border/60 p-8 text-center space-y-4">
+          <p className="text-sm text-[#A0392E]">❌ 登录失败：{errorMsg}</p>
+          <Link href="/login" className="inline-block text-sm text-accent-terracotta-deep hover:underline font-medium">
             返回登录页
           </Link>
         </div>
       ) : (
-        <p className="text-sm text-gray-400">登录中...</p>
+        <p className="text-sm text-muted">登录中...</p>
       )}
     </div>
   )
